@@ -1,43 +1,39 @@
 package com.nova.iris
 
 import android.os.Bundle
-import android.graphics.Color
-import android.view.Gravity
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.os.Handler
+import android.os.Looper
+import android.view.View
+import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
+    private val bootDelay = 2500L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val root = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER
-            setBackgroundColor(Color.WHITE)
-            setPadding(32, 32, 32, 32)
-        }
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-        val title = TextView(this).apply {
-            text = "Iris OS"
-            textSize = 36f
-            setTextColor(Color.BLACK)
-            gravity = Gravity.CENTER
-        }
+        window.decorView.systemUiVisibility =
+            View.SYSTEM_UI_FLAG_FULLSCREEN or
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or
+            View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 
-        val subtitle = TextView(this).apply {
-            text = "Welcome to the future."
-            textSize = 18f
-            setTextColor(Color.DKGRAY)
-            gravity = Gravity.CENTER
-            setPadding(0, 16, 0, 0)
-        }
+        setContentView(R.layout.boot_screen)
 
-        root.addView(title)
+        Handler(Looper.getMainLooper()).postDelayed({
 
-        root.addView(subtitle)
+            showHomeScreen()
 
-        setContentView(root)
+        }, bootDelay)
+    }
+
+    private fun showHomeScreen() {
+
+        val home = HomeScreen(this)
+
+        setContentView(home.create())
     }
 }
