@@ -4,7 +4,9 @@
 
     <application
         android:theme="@style/Theme.IrisOS"
-        android:label="Iris OS">
+        android:label="Iris OS"
+        android:allowBackup="true"
+        android:supportsRtl="true">
 
         <activity
             android:name=".MainActivity"
@@ -12,6 +14,7 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
