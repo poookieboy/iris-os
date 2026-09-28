@@ -1,0 +1,134 @@
+package com.nova.iris
+
+import android.content.Context
+import android.graphics.Color
+import android.graphics.Typeface
+import android.view.Gravity
+import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
+
+class FilesScreen(
+    private val context: Context,
+    private val onBack: () -> Unit
+) {
+
+    fun create(): View {
+
+        val root = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            setBackgroundColor(Color.WHITE)
+            setPadding(24, 24, 24, 24)
+        }
+
+        val header = LinearLayout(context).apply {
+            gravity = Gravity.CENTER_VERTICAL
+        }
+
+        val back = TextView(context).apply {
+            text = "‹"
+            textSize = 40f
+            setTextColor(Color.BLACK)
+            setPadding(0, 0, 24, 0)
+
+            setOnClickListener {
+                onBack()
+            }
+        }
+
+        val title = TextView(context).apply {
+            text = "Files"
+            textSize = 28f
+            setTextColor(Color.BLACK)
+            typeface = Typeface.DEFAULT_BOLD
+        }
+
+        header.addView(back)
+        header.addView(title)
+
+        root.addView(header)
+
+        val search = TextView(context).apply {
+            text = "Search files"
+            textSize = 17f
+            setTextColor(Color.DKGRAY)
+            setPadding(20, 20, 20, 20)
+            setBackgroundColor(Color.LTGRAY)
+        }
+
+        root.addView(
+            search,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                65
+            ).apply {
+                topMargin = 24
+                bottomMargin = 24
+            }
+        )
+
+        val folders = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+        }
+
+        val recent = createRow("Recent", "Recently opened files")
+        val documents = createRow("Documents", "Documents and text files")
+        val downloads = createRow("Downloads", "Downloaded files")
+        val images = createRow("Images", "Photos and pictures")
+
+        folders.addView(recent)
+        folders.addView(documents)
+        folders.addView(downloads)
+        folders.addView(images)
+
+        root.addView(
+            folders,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                1f
+            )
+        )
+
+        val storage = TextView(context).apply {
+            text = "Internal Storage"
+            textSize = 16f
+            setTextColor(Color.GRAY)
+            gravity = Gravity.CENTER
+            setPadding(20, 20, 20, 20)
+        }
+
+        root.addView(storage)
+
+        return root
+    }
+
+    private fun createRow(
+        titleText: String,
+        subtitleText: String
+    ): View {
+
+        val row = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(20, 18, 20, 18)
+        }
+
+        val title = TextView(context).apply {
+            text = titleText
+            textSize = 19f
+            setTextColor(Color.BLACK)
+            typeface = Typeface.DEFAULT_BOLD
+        }
+
+        val subtitle = TextView(context).apply {
+            text = subtitleText
+            textSize = 14f
+            setTextColor(Color.GRAY)
+        }
+
+        row.addView(title)
+        row.addView(subtitle)
+
+        return row
+    }
+}
