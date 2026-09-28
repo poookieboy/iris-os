@@ -8,7 +8,10 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 
-class SettingsScreen(private val context: Context) {
+class SettingsScreen(
+    private val context: Context,
+    private val onBack: () -> Unit
+) {
 
     fun create(): View {
 
@@ -18,85 +21,152 @@ class SettingsScreen(private val context: Context) {
             setPadding(24, 24, 24, 24)
         }
 
-        val title = TextView(context).apply {
-            text = "Settings"
-            textSize = 32f
-            setTextColor(Color.BLACK)
-            typeface = Typeface.DEFAULT_BOLD
-            setPadding(8, 20, 8, 28)
+        val header = LinearLayout(context).apply {
+            gravity = Gravity.CENTER_VERTICAL
         }
 
-        root.addView(title)
+        val back = TextView(context).apply {
+            text = "‹"
+            textSize = 40f
+            setTextColor(Color.BLACK)
+            setPadding(0, 0, 24, 0)
 
-        addSection(root, "Nova")
+            setOnClickListener {
+                onBack()
+            }
+        }
 
-        addSetting(root, "Display")
-        addSetting(root, "Sound & Haptics")
-        addSetting(root, "Wallpaper & Style")
-        addSetting(root, "Foldable & Continuity")
+        val title = TextView(context).apply {
+            text = "Settings"
+            textSize = 28f
+            setTextColor(Color.BLACK)
+            typeface = Typeface.DEFAULT_BOLD
+        }
 
-        addSection(root, "Connectivity")
+        header.addView(back)
+        header.addView(title)
 
-        addSetting(root, "Wi-Fi")
-        addSetting(root, "Bluetooth")
-        addSetting(root, "Mobile Network")
-        addSetting(root, "Airplane Mode")
+        root.addView(header)
 
-        addSection(root, "Personal")
+        val profile = createSection(
+            "Iris ID",
+            "Nova account and identity"
+        )
 
-        addSetting(root, "Notifications")
-        addSetting(root, "Apps")
-        addSetting(root, "Accounts")
-        addSetting(root, "Security & Privacy")
+        val network = createSection(
+            "Network & Internet",
+            "Wi-Fi, mobile data and connections"
+        )
 
-        addSection(root, "System")
+        val display = createSection(
+            "Display",
+            "Brightness, appearance and screen"
+        )
 
-        addSetting(root, "Battery")
-        addSetting(root, "Storage")
-        addSetting(root, "System Update")
-        addSetting(root, "About Nova")
+        val sound = createSection(
+            "Sound & Haptics",
+            "Volume, vibration and sounds"
+        )
+
+        val notifications = createSection(
+            "Notifications",
+            "Alerts and notification controls"
+        )
+
+        val apps = createSection(
+            "Apps",
+            "Installed applications and permissions"
+        )
+
+        val privacy = createSection(
+            "Privacy",
+            "Location, camera, microphone and data"
+        )
+
+        val security = createSection(
+            "Security",
+            "Screen lock, biometrics and device protection"
+        )
+
+        val wallet = createSection(
+            "Wallet",
+            "Payment and wallet settings"
+        )
+
+        val battery = createSection(
+            "Battery",
+            "Battery usage and power controls"
+        )
+
+        val storage = createSection(
+            "Storage",
+            "Device storage and files"
+        )
+
+        val system = createSection(
+            "System",
+            "Updates, language and device information"
+        )
+
+        val settingsList = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+        }
+
+        settingsList.addView(profile)
+        settingsList.addView(network)
+        settingsList.addView(display)
+        settingsList.addView(sound)
+        settingsList.addView(notifications)
+        settingsList.addView(apps)
+        settingsList.addView(privacy)
+        settingsList.addView(security)
+        settingsList.addView(wallet)
+        settingsList.addView(battery)
+        settingsList.addView(storage)
+        settingsList.addView(system)
+
+        root.addView(
+            settingsList,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                1f
+            )
+        )
 
         return root
     }
 
-    private fun addSection(
-        root: LinearLayout,
-        title: String
-    ) {
+    private fun createSection(
+        titleText: String,
+        subtitleText: String
+    ): View {
 
-        val section = TextView(context).apply {
-            text = title
-            textSize = 14f
-            setTextColor(Color.DKGRAY)
-            typeface = Typeface.DEFAULT_BOLD
-            setPadding(8, 24, 8, 8)
+        val row = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(20, 16, 20, 16)
         }
 
-        root.addView(section)
-    }
-
-    private fun addSetting(
-        root: LinearLayout,
-        title: String
-    ) {
-
-        val item = TextView(context).apply {
-            text = title
+        val title = TextView(context).apply {
+            text = titleText
             textSize = 18f
             setTextColor(Color.BLACK)
-            gravity = Gravity.CENTER_VERTICAL
-            setPadding(16, 20, 16, 20)
-
-            isClickable = true
-            isFocusable = true
+            typeface = Typeface.DEFAULT_BOLD
         }
 
-        root.addView(
-            item,
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        )
+        val subtitle = TextView(context).apply {
+            text = subtitleText
+            textSize = 13f
+            setTextColor(Color.GRAY)
+        }
+
+        row.addView(title)
+        row.addView(subtitle)
+
+        row.setOnClickListener {
+            // Settings sections will become functional here.
+        }
+
+        return row
     }
 }
