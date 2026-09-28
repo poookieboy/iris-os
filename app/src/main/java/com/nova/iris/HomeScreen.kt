@@ -7,8 +7,13 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class HomeScreen(private val context: Context) {
+
+    private val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     fun create(): View {
 
@@ -33,7 +38,7 @@ class HomeScreen(private val context: Context) {
         }
 
         val time = TextView(context).apply {
-            text = "12:00"
+            text = getCurrentTime()
             textSize = 64f
             setTextColor(Color.BLACK)
             typeface = Typeface.DEFAULT
@@ -70,5 +75,9 @@ class HomeScreen(private val context: Context) {
         )
 
         return root
+    }
+
+    private fun getCurrentTime(): String {
+        return timeFormat.format(Date())
     }
 }
