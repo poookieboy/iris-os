@@ -17,11 +17,11 @@ class HomeScreen(
         val root = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.WHITE)
-            setPadding(24, 24, 24, 24)
+            setPadding(20, 20, 20, 20)
         }
 
-        // System bar
         val systemBar = SystemBar(context).create()
+
         root.addView(
             systemBar,
             LinearLayout.LayoutParams(
@@ -30,90 +30,81 @@ class HomeScreen(
             )
         )
 
-        // Main content
-        val content = LinearLayout(context).apply {
-            orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER
-        }
-
-        val clock = TextView(context).apply {
-            text = "12:00"
-            textSize = 56f
-            setTextColor(Color.BLACK)
-            gravity = Gravity.CENTER
-            typeface = Typeface.DEFAULT_BOLD
-        }
-
-        val welcome = TextView(context).apply {
+        val greeting = TextView(context).apply {
             text = "Iris OS"
-            textSize = 26f
+            textSize = 30f
             setTextColor(Color.BLACK)
-            gravity = Gravity.CENTER
             typeface = Typeface.DEFAULT_BOLD
+            gravity = Gravity.CENTER
+            setPadding(0, 30, 0, 5)
         }
+
+        root.addView(greeting)
 
         val subtitle = TextView(context).apply {
-            text = "Welcome to your Nova"
+            text = "Welcome to Nova"
             textSize = 16f
-            setTextColor(Color.DKGRAY)
+            setTextColor(Color.GRAY)
             gravity = Gravity.CENTER
+            setPadding(0, 0, 0, 25)
         }
 
-        content.addView(clock)
-        content.addView(welcome)
-        content.addView(subtitle)
+        root.addView(subtitle)
 
-        // Phone button
-        val phoneButton = TextView(context).apply {
-            text = "☎  Phone"
-            textSize = 18f
-            setTextColor(Color.BLACK)
-            gravity = Gravity.CENTER
-            setPadding(30, 20, 30, 20)
-
-            setBackgroundColor(Color.LTGRAY)
-
-            setOnClickListener {
-
-                val phoneScreen = PhoneScreen(
-                    context = context,
-                    onBack = {
-                        root.removeAllViews()
-                        root.addView(
-                            create(),
-                            LinearLayout.LayoutParams(
-                                LinearLayout.LayoutParams.MATCH_PARENT,
-                                LinearLayout.LayoutParams.MATCH_PARENT
-                            )
-                        )
-                    }
-                )
-
-                root.removeAllViews()
-
-                root.addView(
-                    phoneScreen.create(),
-                    LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT
-                    )
-                )
-            }
+        val apps = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
         }
 
-        content.addView(
-            phoneButton,
-            LinearLayout.LayoutParams(
-                220,
-                80
-            ).apply {
-                gravity = Gravity.CENTER
-                topMargin = 40
-            }
+        apps.addView(
+            createRow(
+                "Phone",
+                "Contacts",
+                "Messages"
+            )
+        )
+
+        apps.addView(
+            createRow(
+                "Camera",
+                "Gallery",
+                "Files"
+            )
+        )
+
+        apps.addView(
+            createRow(
+                "Calculator",
+                "Calendar",
+                "Clock"
+            )
+        )
+
+        apps.addView(
+            createRow(
+                "Weather",
+                "Maps",
+                "Music"
+            )
+        )
+
+        apps.addView(
+            createRow(
+                "Mail",
+                "Recorder",
+                "Timer"
+            )
+        )
+
+        apps.addView(
+            createRow(
+                "Reminders",
+                "Wallet",
+                "Iris"
+            )
         )
 
         root.addView(
-            content,
+            apps,
             LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 0,
@@ -122,5 +113,197 @@ class HomeScreen(
         )
 
         return root
+    }
+
+    private fun createRow(
+        first: String,
+        second: String,
+        third: String
+    ): View {
+
+        val row = LinearLayout(context).apply {
+            gravity = Gravity.CENTER
+        }
+
+        row.addView(
+            createAppButton(first),
+            LinearLayout.LayoutParams(0, 90, 1f)
+        )
+
+        row.addView(
+            createAppButton(second),
+            LinearLayout.LayoutParams(0, 90, 1f)
+        )
+
+        row.addView(
+            createAppButton(third),
+            LinearLayout.LayoutParams(0, 90, 1f)
+        )
+
+        return row
+    }
+
+    private fun createAppButton(
+        name: String
+    ): TextView {
+
+        return TextView(context).apply {
+            text = name
+            textSize = 16f
+            setTextColor(Color.BLACK)
+            gravity = Gravity.CENTER
+            typeface = Typeface.DEFAULT_BOLD
+            setPadding(8, 8, 8, 8)
+
+            setBackgroundColor(Color.LTGRAY)
+
+            setOnClickListener {
+
+                when (name) {
+
+                    "Phone" -> openScreen(
+                        PhoneScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Contacts" -> openScreen(
+                        ContactsScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Messages" -> openScreen(
+                        MessagesScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Camera" -> openScreen(
+                        CameraScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Gallery" -> openScreen(
+                        GalleryScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Files" -> openScreen(
+                        FilesScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Calculator" -> openScreen(
+                        CalculatorScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Calendar" -> openScreen(
+                        CalendarScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Clock" -> openScreen(
+                        ClockScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Weather" -> openScreen(
+                        WeatherScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Maps" -> openScreen(
+                        MapsScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Music" -> openScreen(
+                        MusicScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Mail" -> openScreen(
+                        MailScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Recorder" -> openScreen(
+                        RecorderScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Timer" -> openScreen(
+                        TimerScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Reminders" -> openScreen(
+                        RemindersScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Wallet" -> openScreen(
+                        WalletScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Iris" -> openScreen(
+                        IrisAssistantScreen(context) {
+                            showHome()
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    private fun openScreen(screen: Any) {
+
+        val view = when (screen) {
+
+            is PhoneScreen -> screen.create()
+            is ContactsScreen -> screen.create()
+            is MessagesScreen -> screen.create()
+            is CameraScreen -> screen.create()
+            is GalleryScreen -> screen.create()
+            is FilesScreen -> screen.create()
+            is CalculatorScreen -> screen.create()
+            is CalendarScreen -> screen.create()
+            is ClockScreen -> screen.create()
+            is WeatherScreen -> screen.create()
+            is MapsScreen -> screen.create()
+            is MusicScreen -> screen.create()
+            is MailScreen -> screen.create()
+            is RecorderScreen -> screen.create()
+            is TimerScreen -> screen.create()
+            is RemindersScreen -> screen.create()
+            is WalletScreen -> screen.create()
+            is IrisAssistantScreen -> screen.create()
+            else -> return
+        }
+
+        (context as? MainActivity)?.setContentView(view)
+    }
+
+    private fun showHome() {
+        (context as? MainActivity)?.setContentView(
+            create()
+        )
     }
 }
