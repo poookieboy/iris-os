@@ -6,6 +6,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 
@@ -13,8 +14,6 @@ class HomeScreen(
 private val context: Context
 ) {
 
-private val irisBlue = Color.rgb(112, 126, 255)
-private val irisLilac = Color.rgb(177, 139, 255)
 private val white = Color.WHITE
 private val softWhite = Color.rgb(235, 237, 255)
 
@@ -23,6 +22,7 @@ fun create(): View {
     val root = LinearLayout(context).apply {
         orientation = LinearLayout.VERTICAL
         setPadding(22, 18, 22, 18)
+
         background = GradientDrawable(
             GradientDrawable.Orientation.TL_BR,
             intArrayOf(
@@ -33,7 +33,7 @@ fun create(): View {
         )
     }
 
-    // Top system area
+    // Iris system bar
     root.addView(
         SystemBar(context).create(),
         LinearLayout.LayoutParams(
@@ -49,19 +49,18 @@ fun create(): View {
         setPadding(0, 22, 0, 18)
     }
 
-    val iris = TextView(context).apply {
-        text = "◈"
-        textSize = 28f
-        setTextColor(white)
-        gravity = Gravity.CENTER
-        typeface = Typeface.DEFAULT_BOLD
+    // REAL IRIS LOGO
+    val iris = ImageView(context).apply {
+        setImageResource(R.drawable.iris_logo)
+        scaleType = ImageView.ScaleType.CENTER_INSIDE
+        setPadding(8, 8, 8, 8)
     }
 
     header.addView(
         iris,
         LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
-            48
+            72
         )
     )
 
@@ -160,6 +159,7 @@ fun create(): View {
     val dock = LinearLayout(context).apply {
         gravity = Gravity.CENTER
         setPadding(12, 10, 12, 10)
+
         background = roundedBackground(
             Color.argb(48, 255, 255, 255),
             34f
@@ -247,6 +247,7 @@ private fun app(
         setTextColor(white)
         gravity = Gravity.CENTER
         typeface = Typeface.DEFAULT_BOLD
+
         background = roundedBackground(
             Color.argb(58, 255, 255, 255),
             24f
@@ -263,7 +264,6 @@ private fun app(
         textSize = 11f
         setTextColor(softWhite)
         gravity = Gravity.CENTER
-        typeface = Typeface.DEFAULT
         setPadding(0, 5, 0, 0)
     }
 
@@ -418,7 +418,10 @@ private fun openScreen(screen: Any) {
 }
 
 private fun showHome() {
-    (context as? MainActivity)?.setContentView(create())
+
+    (context as? MainActivity)?.setContentView(
+        create()
+    )
 }
 
 }
