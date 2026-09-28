@@ -14,9 +14,22 @@ class HomeScreen(private val context: Context) {
 
         val root = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER
             setBackgroundColor(Color.WHITE)
-            setPadding(32, 32, 32, 32)
+        }
+
+        val systemBar = SystemBar(context).create()
+
+        root.addView(
+            systemBar,
+            LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+        )
+
+        val content = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
         }
 
         val time = TextView(context).apply {
@@ -27,7 +40,7 @@ class HomeScreen(private val context: Context) {
             gravity = Gravity.CENTER
         }
 
-        val welcome = TextView(context).apply {
+        val title = TextView(context).apply {
             text = "Iris OS"
             textSize = 24f
             setTextColor(Color.DKGRAY)
@@ -43,27 +56,16 @@ class HomeScreen(private val context: Context) {
             setPadding(0, 8, 0, 0)
         }
 
-        root.addView(
-            time,
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        )
+        content.addView(time)
+        content.addView(title)
+        content.addView(message)
 
         root.addView(
-            welcome,
+            content,
             LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        )
-
-        root.addView(
-            message,
-            LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                0,
+                1f
             )
         )
 
