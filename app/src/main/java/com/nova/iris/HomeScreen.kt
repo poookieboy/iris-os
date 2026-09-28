@@ -36,7 +36,7 @@ class HomeScreen(
             setTextColor(Color.BLACK)
             typeface = Typeface.DEFAULT_BOLD
             gravity = Gravity.CENTER
-            setPadding(0, 30, 0, 5)
+            setPadding(0, 25, 0, 5)
         }
 
         root.addView(greeting)
@@ -46,7 +46,7 @@ class HomeScreen(
             textSize = 16f
             setTextColor(Color.GRAY)
             gravity = Gravity.CENTER
-            setPadding(0, 0, 0, 25)
+            setPadding(0, 0, 0, 20)
         }
 
         root.addView(subtitle)
@@ -99,7 +99,15 @@ class HomeScreen(
             createRow(
                 "Reminders",
                 "Wallet",
-                "Iris"
+                "Nova Store"
+            )
+        )
+
+        apps.addView(
+            createRow(
+                "Iris",
+                "Settings",
+                "Security"
             )
         )
 
@@ -127,17 +135,17 @@ class HomeScreen(
 
         row.addView(
             createAppButton(first),
-            LinearLayout.LayoutParams(0, 90, 1f)
+            LinearLayout.LayoutParams(0, 80, 1f)
         )
 
         row.addView(
             createAppButton(second),
-            LinearLayout.LayoutParams(0, 90, 1f)
+            LinearLayout.LayoutParams(0, 80, 1f)
         )
 
         row.addView(
             createAppButton(third),
-            LinearLayout.LayoutParams(0, 90, 1f)
+            LinearLayout.LayoutParams(0, 80, 1f)
         )
 
         return row
@@ -148,13 +156,13 @@ class HomeScreen(
     ): TextView {
 
         return TextView(context).apply {
+
             text = name
-            textSize = 16f
+            textSize = 15f
             setTextColor(Color.BLACK)
             gravity = Gravity.CENTER
             typeface = Typeface.DEFAULT_BOLD
-            setPadding(8, 8, 8, 8)
-
+            setPadding(6, 6, 6, 6)
             setBackgroundColor(Color.LTGRAY)
 
             setOnClickListener {
@@ -263,8 +271,20 @@ class HomeScreen(
                         }
                     )
 
+                    "Nova Store" -> openScreen(
+                        NovaStoreScreen(context) {
+                            showHome()
+                        }
+                    )
+
                     "Iris" -> openScreen(
                         IrisAssistantScreen(context) {
+                            showHome()
+                        }
+                    )
+
+                    "Settings" -> openScreen(
+                        SettingsScreen(context) {
                             showHome()
                         }
                     )
@@ -294,7 +314,10 @@ class HomeScreen(
             is TimerScreen -> screen.create()
             is RemindersScreen -> screen.create()
             is WalletScreen -> screen.create()
+            is NovaStoreScreen -> screen.create()
             is IrisAssistantScreen -> screen.create()
+            is SettingsScreen -> screen.create()
+
             else -> return
         }
 
@@ -302,6 +325,7 @@ class HomeScreen(
     }
 
     private fun showHome() {
+
         (context as? MainActivity)?.setContentView(
             create()
         )
