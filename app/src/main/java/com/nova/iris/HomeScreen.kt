@@ -7,63 +7,110 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
-class HomeScreen(private val context: Context) {
-
-    private val timeFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+class HomeScreen(
+    private val context: Context
+) {
 
     fun create(): View {
 
         val root = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(Color.WHITE)
+            setPadding(24, 24, 24, 24)
         }
 
+        // System bar
         val systemBar = SystemBar(context).create()
-
         root.addView(
             systemBar,
             LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                70
             )
         )
 
+        // Main content
         val content = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
         }
 
-        val time = TextView(context).apply {
-            text = getCurrentTime()
-            textSize = 64f
+        val clock = TextView(context).apply {
+            text = "12:00"
+            textSize = 56f
             setTextColor(Color.BLACK)
-            typeface = Typeface.DEFAULT
             gravity = Gravity.CENTER
+            typeface = Typeface.DEFAULT_BOLD
         }
 
-        val title = TextView(context).apply {
+        val welcome = TextView(context).apply {
             text = "Iris OS"
-            textSize = 24f
+            textSize = 26f
+            setTextColor(Color.BLACK)
+            gravity = Gravity.CENTER
+            typeface = Typeface.DEFAULT_BOLD
+        }
+
+        val subtitle = TextView(context).apply {
+            text = "Welcome to your Nova"
+            textSize = 16f
             setTextColor(Color.DKGRAY)
             gravity = Gravity.CENTER
-            setPadding(0, 16, 0, 0)
         }
 
-        val message = TextView(context).apply {
-            text = "Welcome to your Nova."
-            textSize = 16f
-            setTextColor(Color.GRAY)
+        content.addView(clock)
+        content.addView(welcome)
+        content.addView(subtitle)
+
+        // Phone button
+        val phoneButton = TextView(context).apply {
+            text = "☎  Phone"
+            textSize = 18f
+            setTextColor(Color.BLACK)
             gravity = Gravity.CENTER
-            setPadding(0, 8, 0, 0)
+            setPadding(30, 20, 30, 20)
+
+            setBackgroundColor(Color.LTGRAY)
+
+            setOnClickListener {
+
+                val phoneScreen = PhoneScreen(
+                    context = context,
+                    onBack = {
+                        root.removeAllViews()
+                        root.addView(
+                            create(),
+                            LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.MATCH_PARENT
+                            )
+                        )
+                    }
+                )
+
+                root.removeAllViews()
+
+                root.addView(
+                    phoneScreen.create(),
+                    LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT
+                    )
+                )
+            }
         }
 
-        content.addView(time)
-        content.addView(title)
-        content.addView(message)
+        content.addView(
+            phoneButton,
+            LinearLayout.LayoutParams(
+                220,
+                80
+            ).apply {
+                gravity = Gravity.CENTER
+                topMargin = 40
+            }
+        )
 
         root.addView(
             content,
@@ -75,9 +122,5 @@ class HomeScreen(private val context: Context) {
         )
 
         return root
-    }
-
-    private fun getCurrentTime(): String {
-        return timeFormat.format(Date())
     }
 }
