@@ -86,7 +86,7 @@ class LockScreen(
         val logo = ImageView(context).apply {
 
             setImageResource(
-                R.drawable.nova_wordmark
+                R.drawable.file_00000000792082079c05fbc3cac36515
             )
 
             scaleType =
