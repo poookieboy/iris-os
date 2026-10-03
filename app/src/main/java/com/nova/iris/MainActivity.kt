@@ -7,22 +7,47 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
-    private val handler = Handler(Looper.getMainLooper())
+    private val handler =
+        Handler(Looper.getMainLooper())
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreate(
+        savedInstanceState: Bundle?
+    ) {
 
-        // Iris OS Boot
-        setContentView(R.layout.boot_screen)
+        super.onCreate(
+            savedInstanceState
+        )
 
+        // Iris OS boot screen
+        setContentView(
+            R.layout.boot_screen
+        )
+
+        // Boot → Lock Screen
         handler.postDelayed({
-            showHome()
+
+            showLockScreen()
+
         }, 2500)
+    }
+
+    private fun showLockScreen() {
+
+        val lockScreen =
+            LockScreen(this) {
+
+                showHome()
+            }
+
+        setContentView(
+            lockScreen.create()
+        )
     }
 
     private fun showHome() {
 
-        val homeScreen = HomeScreen(this)
+        val homeScreen =
+            HomeScreen(this)
 
         setContentView(
             homeScreen.create()
