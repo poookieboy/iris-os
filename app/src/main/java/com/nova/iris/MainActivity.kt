@@ -10,6 +10,8 @@ class MainActivity : AppCompatActivity() {
     private val handler =
         Handler(Looper.getMainLooper())
 
+    private var showingQuickPanel = false
+
     override fun onCreate(
         savedInstanceState: Bundle?
     ) {
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun showLockScreen() {
 
+        showingQuickPanel = false
+
         val lockScreen =
             LockScreen(this) {
 
@@ -46,11 +50,40 @@ class MainActivity : AppCompatActivity() {
 
     private fun showHome() {
 
+        showingQuickPanel = false
+
         val homeScreen =
             HomeScreen(this)
 
         setContentView(
             homeScreen.create()
         )
+    }
+
+    fun showQuickPanel() {
+
+        showingQuickPanel = true
+
+        val quickPanel =
+            QuickPanelScreen(this) {
+
+                showHome()
+            }
+
+        setContentView(
+            quickPanel.create()
+        )
+    }
+
+    override fun onBackPressed() {
+
+        if (showingQuickPanel) {
+
+            showHome()
+
+        } else {
+
+            super.onBackPressed()
+        }
     }
 }
