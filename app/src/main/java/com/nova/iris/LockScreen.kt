@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import java.text.SimpleDateFormat
@@ -23,16 +24,24 @@ class LockScreen(
     fun create(): View {
 
         val root = LinearLayout(context).apply {
+
             orientation = LinearLayout.VERTICAL
+
             gravity = Gravity.CENTER_HORIZONTAL
-            setPadding(24, 28, 24, 28)
+
+            setPadding(
+                24,
+                28,
+                24,
+                28
+            )
 
             background = GradientDrawable(
                 GradientDrawable.Orientation.TL_BR,
                 intArrayOf(
-                    Color.rgb(12, 17, 40),
-                    Color.rgb(39, 39, 91),
-                    Color.rgb(91, 70, 145)
+                    Color.rgb(5, 8, 18),
+                    Color.rgb(12, 17, 38),
+                    Color.rgb(25, 24, 55)
                 )
             )
 
@@ -41,7 +50,9 @@ class LockScreen(
                 when (event.action) {
 
                     MotionEvent.ACTION_DOWN -> {
+
                         downY = event.y
+
                         true
                     }
 
@@ -67,37 +78,83 @@ class LockScreen(
             View(context),
             LinearLayout.LayoutParams(
                 1,
-                70
+                65
             )
         )
 
-        // Nova logo
-        val logo = TextView(context).apply {
-            text = "✿"
-            textSize = 62f
-            setTextColor(
-                Color.rgb(
-                    187,
-                    163,
-                    255
-                )
+        // NOVA WORDMARK
+        val logo = ImageView(context).apply {
+
+            setImageResource(
+                R.drawable.nova_wordmark
             )
-            gravity = Gravity.CENTER
+
+            scaleType =
+                ImageView.ScaleType.CENTER_INSIDE
+
+            adjustViewBounds = true
+
+            setPadding(
+                10,
+                10,
+                10,
+                10
+            )
         }
 
         root.addView(
             logo,
             LinearLayout.LayoutParams(
-                -1,
-                90
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                150
             )
         )
 
-        // Time
+        // IRIS OS
+        val iris = TextView(context).apply {
+
+            text = "I R I S   O S"
+
+            textSize = 11f
+
+            setTextColor(
+                Color.rgb(
+                    185,
+                    190,
+                    210
+                )
+            )
+
+            gravity = Gravity.CENTER
+
+            letterSpacing = 0.25f
+
+            setPadding(
+                0,
+                2,
+                0,
+                30
+            )
+        }
+
+        root.addView(
+            iris,
+            LinearLayout.LayoutParams(
+                -1,
+                45
+            )
+        )
+
+        // TIME
         val time = TextView(context).apply {
+
             text = getTime()
+
             textSize = 64f
-            setTextColor(Color.WHITE)
+
+            setTextColor(
+                Color.WHITE
+            )
 
             typeface = Typeface.create(
                 "sans-serif-light",
@@ -115,21 +172,31 @@ class LockScreen(
             )
         )
 
-        // Date
+        // DATE
         val date = TextView(context).apply {
+
             text = getDate()
+
             textSize = 16f
+
             setTextColor(
                 Color.rgb(
-                    225,
-                    226,
-                    245
+                    215,
+                    218,
+                    235
                 )
             )
+
             gravity = Gravity.CENTER
         }
 
-        root.addView(date)
+        root.addView(
+            date,
+            LinearLayout.LayoutParams(
+                -1,
+                40
+            )
+        )
 
         // Flexible space
         root.addView(
@@ -141,12 +208,20 @@ class LockScreen(
             )
         )
 
-        // Nova greeting
+        // Welcome
         val greeting = TextView(context).apply {
+
             text = "Welcome to Nova"
+
             textSize = 21f
-            setTextColor(Color.WHITE)
-            typeface = Typeface.DEFAULT_BOLD
+
+            setTextColor(
+                Color.WHITE
+            )
+
+            typeface =
+                Typeface.DEFAULT_BOLD
+
             gravity = Gravity.CENTER
         }
 
@@ -154,20 +229,25 @@ class LockScreen(
             greeting,
             LinearLayout.LayoutParams(
                 -1,
-                40
+                42
             )
         )
 
+        // Instruction
         val instruction = TextView(context).apply {
+
             text = "Swipe up to unlock"
+
             textSize = 14f
+
             setTextColor(
                 Color.rgb(
-                    215,
-                    216,
-                    240
+                    190,
+                    194,
+                    220
                 )
             )
+
             gravity = Gravity.CENTER
         }
 
@@ -175,20 +255,26 @@ class LockScreen(
             instruction,
             LinearLayout.LayoutParams(
                 -1,
-                35
+                34
             )
         )
 
         // Unlock button
         val unlock = TextView(context).apply {
+
             text = "↑"
-            textSize = 27f
-            setTextColor(Color.WHITE)
+
+            textSize = 28f
+
+            setTextColor(
+                Color.WHITE
+            )
+
             gravity = Gravity.CENTER
 
             background = rounded(
                 Color.argb(
-                    55,
+                    45,
                     255,
                     255,
                     255
@@ -197,6 +283,7 @@ class LockScreen(
             )
 
             setOnClickListener {
+
                 onUnlock()
             }
         }
@@ -209,19 +296,29 @@ class LockScreen(
             )
         )
 
-        // Bottom system text
+        // Bottom branding
         val system = TextView(context).apply {
-            text = "Iris OS  •  Nova"
+
+            text = "Powered by Iris OS"
+
             textSize = 11f
+
             setTextColor(
                 Color.rgb(
-                    190,
-                    191,
-                    220
+                    150,
+                    155,
+                    185
                 )
             )
+
             gravity = Gravity.CENTER
-            setPadding(0, 18, 0, 0)
+
+            setPadding(
+                0,
+                18,
+                0,
+                0
+            )
         }
 
         root.addView(
@@ -261,7 +358,9 @@ class LockScreen(
     ): GradientDrawable {
 
         return GradientDrawable().apply {
+
             setColor(color)
+
             cornerRadius = radius
         }
     }
